@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "pedestrian-intent"
+version = "0.1.0"
+description = "A library for pedestrian crossing intention prediction using foundation models."
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "pedestrian_intent", from = "."}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.23.5"
+opencv-python = "^4.8.0"
+torch = "^2.0.1"
+torchvision = "^0.15.2"
+transformers = "^4.30.2"
+timm = "^0.9.5"
+matplotlib = "^3.7.2"
+
+# NOTE: mmcv and mmpose often require custom installation based on your CUDA version.
+# Please follow the official installation guides from OpenMMLab.
+# e.g., pip install -U openmim; mim install mmcv; mim install mmpose
+# The following are placeholders to indicate the need.
+# mmcv = ">=2.0.0"
+# mmpose = ">=1.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+notebook = "^7.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

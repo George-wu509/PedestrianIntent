@@ -1,0 +1,33 @@
+
+{
+    "classes": [
+        {
+            "name": "pedestrian",
+            "color_rgb": [220, 20, 60]
+        },
+        {
+            "name": "car",
+            "color_rgb": [0, 0, 142]
+        },
+        {
+            "name": "crosswalk",
+            "color_rgb": [244, 244, 244]
+        },
+        {
+            "name": "traffic light",
+            "color_rgb": [255, 215, 0]
+        },
+        {
+            "name": "road",
+            "color_rgb": [128, 128, 128]
+        },
+        {
+            "name": "sidewalk",
+            "color_rgb": [244, 35, 232]
+        },
+        {
+            "name": "head",
+            "color_rgb": [255, 105, 180]
+        }
+    ]
+}
