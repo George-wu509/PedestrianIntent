@@ -1,6 +1,6 @@
 # Pedestrian Intent Prediction Library
 
-![Demo GIF](https://your-link-to-a-cool-demo-gif.com/demo.gif)
+
 
 **`pedestrian-intent`** is a powerful Python library designed for real-time pedestrian crossing intention prediction from video streams. It leverages the power of cutting-edge, pre-trained foundation models like **Grounding DINO** and **SAM2** to perform zero-shot detection, segmentation, and tracking, eliminating the need for traditional dataset annotation and model training for feature extraction.
 
@@ -17,16 +17,45 @@
 -   **Modular & Extensible**: A clean, object-oriented structure makes it easy to add new detectors, feature extractors, or prediction models.
 -   **Rich Visualization**: Comes with built-in utilities to visualize all extracted features (skeletons, masks, gaze vectors, trajectories) on the video.
 
-## How It Works
+## Core Technology Stack
+This project integrates several cutting-edge models and libraries to achieve its capabilities.
 
-This library operates on a new paradigm: orchestrating powerful foundation models instead of training custom ones.
 
-1.  **Detect & Track**: `GroundedSAMDetector` takes text prompts (e.g., "pedestrian", "car") and processes a video to find and track these objects frame by frame.
-2.  **Extract Attributes**: For each tracked pedestrian, a series of `Extractor` modules are run to gather fine-grained details:
-    -   `PoseExtractor` finds body keypoints.
-    -   `GazeExtractor` determines head orientation and gaze.
-    -   `TrajectoryExtractor` computes the path of movement.
-3.  **Predict Intention**: A `Predictor` module takes the rich, multi-modal feature set and applies logic (e.g., a rule-based engine or a simple temporal model) to predict the probability of a crossing intention.
+| Category          | Technology                 | Purpose                                                   |
+|-------------------|----------------------------|-----------------------------------------------------------|
+| Foundation Models | Grounding DINO             | Zero-Shot Object Detection via Text Prompts               |
+|                   | Segment Anything (SAM/SAM2)| High-Quality Object Segmentation & Video Tracking         |
+| Feature Extractors| MMPose                     | Whole-Body (133 keypoints) Pose Estimation                |
+|                   | ETH-XGaze (or similar)     | Gaze and Head Pose Estimation                             |
+| Core Libraries    | Python 3.9+                | Core Programming Language                                 |
+|                   | PyTorch                    | Deep Learning Framework                                   |
+|                   | Transformers (Hugging Face)| For easy access to models like Grounding DINO             |
+|                   | OpenCV                     | Video/Image Processing & Visualization                    |
+| Project Management| Poetry                     | Dependency and Environment Management                     |
+
+## Project Structure
+
+The repository is organized in a standard Python library structure for clarity and scalability.
+
+```bash
+PedestrianIntent/
+├── pyproject.toml              # Project metadata and dependencies for Poetry
+├── README.md                   # This file
+├── examples/                   # Example scripts showing how to use the library
+│   ├── 1_feature_extraction_demo.py
+│   └── 2_intention_prediction_pipeline.py
+├── pedestrian_intent/          # The main library source code
+│   ├── assets/                 # Static assets like class definitions
+│   ├── core/                   # Core data structures (e.g., Pedestrian, FrameData)
+│   ├── detectors/              # Zero-shot object detection and tracking modules
+│   ├── extractors/             # Modules for pose, gaze, and trajectory extraction
+│   ├── predictors/             # Intention prediction models (e.g., rule-based)
+│   ├── utils/                  # Helper utilities, including visualization tools
+│   └── pipeline.py             # The main orchestrator that connects all modules
+└── scripts/
+    └── download_models.sh      # Script to download pre-trained model weights
+```
+
 
 ## Installation
 
@@ -55,32 +84,40 @@ This project is managed with [Poetry](https://python-poetry.org/).
 
 ## Quickstart
 
-Check out the `examples/` directory for detailed usage. Here's a simple example of running the full pipeline on a video:
+You can run the full end-to-end pipeline on a video file with just a few lines of code. The following example processes a video and saves a new version with all visualizations overlaid.
+
+Place your input video (e.g., my_video.mp4) in the project's root directory.
 
 ```python
-# examples/2_intention_prediction_pipeline.py
+# Found in: examples/2_intention_prediction_pipeline.py
 
 from pedestrian_intent.pipeline import PedestrianIntentPipeline
 
 def main():
-    # Initialize the full pipeline
+    # 1. Initialize the full end-to-end pipeline.
+    #    This will load all the necessary models into memory.
+    print("Initializing the Pedestrian Intent Pipeline...")
     pipeline = PedestrianIntentPipeline()
 
-    # Process a video and save the annotated output
+    # 2. Process a video and save the annotated output.
+    #    The pipeline handles frame-by-frame detection, tracking, feature
+    #    extraction, prediction, and visualization.
+    print("Starting video processing...")
     pipeline.process_video(
-        video_path="path/to/your/input_video.mp4",
-        output_path="path/to/your/output_video.mp4"
+        video_path="my_video.mp4",         # Your input video file
+        output_path="annotated_output.mp4" # Where to save the result
     )
+    print("Processing complete. Check the output file: annotated_output.mp4")
 
 if __name__ == "__main__":
     main()
+```
 
-To-Do & Future Work
-[ ] Implement a Transformer-based predictor for more advanced temporal reasoning.
+To run the example:
+```bash
+# Make sure your poetry environment is active
+poetry shell
 
-[ ] Add support for real-time stream processing (e.g., from a webcam).
-
-[ ] Integrate with large vision-language models (VLMs) for the final prediction step.
-
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+# Run the quick start script
+python examples/2_intention_prediction_pipeline.py
+```
