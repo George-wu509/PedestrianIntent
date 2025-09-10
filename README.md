@@ -1,4 +1,4 @@
-# Pedestrian Intent Prediction Library
+# Enhanced Pedestrian Intention Prediction based on Dynamic Behavior Decoding
 
 
 
